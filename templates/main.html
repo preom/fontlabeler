@@ -1,0 +1,81 @@
+<html>
+    <head>
+        <link rel='stylesheet' type='text/css' href='/static/bower_components/bootstrap/dist/css/bootstrap.css'/>
+        <script src='/static/bower_components/jquery/dist/jquery.js'></script>
+
+        <script>
+            console.log('start')
+            $(document).ready(function(){
+                $('input[name="label"][value="{{current_label_id}}"]').prop('checked', true);
+
+                {% if not prev_page %}
+                    console.log('hello');
+                    $('#prevBtn').addClass('disabled');
+                {% endif %}
+
+                {% if not next_page %}
+                    $('#nextBtn').addClass('disabled');
+                {% endif %}
+
+
+                $("input[name='label']").click(function(e){
+                    $.ajax({
+                        url: '{{current_url}}',
+                        data: {
+                            'label': $('input[name="label"]:checked').val()
+                        },
+                        method: 'POST',
+                        success: function(data){
+                            if ($('input#inputContinueNext').is(':checked')){
+                                {% if next_page %}
+                                    location.href = {{next_page}}
+                                {% else %}
+                                    location.reload();
+                                {% endif %}
+                            }
+                            else{
+                                location.reload();
+                            }
+                            console.log(data);
+                        },
+                        error: function(data){
+                            console.log(data);
+                        }
+                    })
+
+                });
+            });
+        </script>
+    </head>
+
+    <body>
+        <div class='container'>
+            <div>
+                <a id='firstBtn' class='btn btn-primary' href={{first_page}}>FIRST</a>
+                <a id='prevBtn' class='btn btn-primary' href={{prev_page}}>PREV</a>
+                <a id='nextBtn' class='btn btn-primary' href={{next_page}}>NEXT</a>
+                <a id='lastBtn' class='btn btn-primary' href={{last_page}}>LAST</a>
+            </div>
+
+            <br>
+
+            <div>
+                {% for value, label in label_values %}
+                <label> <input type='radio' name='label' value='{{value}}'>{{label}}</label>
+                {% endfor %}
+            </div>
+
+            <label> <input type='checkbox' id='inputContinueNext' checked/> Contine on select </label>
+
+            <h2> {{font_name}} </h2>
+            <h2> {{font_label}} </h2>
+
+            <div>
+                {% for fname in fnames %}
+                    <img src='{{fname}}'>
+                {% endfor %}
+            </div>
+        </div>
+    </body>
+<html>
+
