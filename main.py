@@ -18,12 +18,21 @@ def empty_root():
 
 @app.route('/table')
 def table():
+    session = Session()
+    stmt = session.query(FontLabel, Label).join(Label).subquery(with_labels=True)
+    rows = session.query(Font, stmt.c.labels_name).select_from(Font)\
+            .outerjoin(stmt).all()
+    
+    content = dict()
+    content['rows'] = rows
+
     return render_template('table.html', **content)
 
 @app.route('/<int:id_number>/', methods=['GET', 'POST'])
 def home(id_number):
     """
     TODO: check if id_number is valid
+    TODO: create an interface for depot process management
     """
 
     if request.method == "POST":
