@@ -1,27 +1,39 @@
 <html>
     <head>
+        <link rel='stylesheet' type='text/css' href='/static/bower_components/bootstrap/dist/css/bootstrap.css'/>
+        <style>
+        </style>
     </head>
 
     <body>
-        <table>
-        {% for font, label in rows %}
-        <tr>
-            <td>{{font.id}}</td>
-            <td>{{font.name}}</td>
-            <td>{{label}}</td>
-        </tr>
+        <div class='container'>
+            <div class='row'>
+                <div class='col-md-9'>
+                    <table class='table table-condensed table-bordered table-striped'>
+                    {% for font, label in rows %}
+                    <tr>
+                        <td>{{font.id}}</td>
+                        <td>{{font.name}}</td>
+                        <td>{{label}}</td>
+                    </tr>
 
-        {% endfor %}
-        </table>
+                    {% endfor %}
+                    </table>
+                </div>
 
-        <table>
-        {% for label, frequency in histogram %}
-        <tr>
-            <td>{{label}}</td>
-            <td>{{frequency}}</td>
-        </tr>
 
-        {% endfor %}
-        </table>
+                <div class='col-md-3'>
+                    <table class='table table-condensed'>
+                    {% for label, frequency in histogram %}
+                    <tr>
+                        <td>{{label}}</td>
+                        <td>{{frequency}}</td>
+                    </tr>
+
+                    {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
