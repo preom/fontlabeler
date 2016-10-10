@@ -13,5 +13,15 @@
 
         {% endfor %}
         </table>
+
+        <table>
+        {% for label, frequency in histogram %}
+        <tr>
+            <td>{{label}}</td>
+            <td>{{frequency}}</td>
+        </tr>
+
+        {% endfor %}
+        </table>
     </body>
 </html>

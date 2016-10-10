@@ -1,4 +1,5 @@
 from flask import Flask, request, url_for, render_template, redirect, send_from_directory
+from sqlalchemy import func
 import string
 import pdb
 import os
@@ -22,9 +23,15 @@ def table():
     stmt = session.query(FontLabel, Label).join(Label).subquery(with_labels=True)
     rows = session.query(Font, stmt.c.labels_name).select_from(Font)\
             .outerjoin(stmt).all()
-    
+    histogram = session.query(Label.name, func.count(FontLabel.label_id))\
+            .select_from(FontLabel)\
+            .join(Label).group_by(FontLabel.label_id).all();
+    null_values = session.query(Font).outerjoin(FontLabel).filter(FontLabel.id==None).count()
+    histogram.append(("None", null_values))
+
     content = dict()
     content['rows'] = rows
+    content['histogram'] = histogram
 
     return render_template('table.html', **content)
 
