@@ -7,10 +7,10 @@ import os
 from fontanalysis.db.font import Font
 from fontanalysis.db.label import Label
 from fontanalysis.db.fontlabel import FontLabel
-from fontanalysis.db.dbsettings import Session
+from fontanalysis.db.dbsettings import Session, imgDepotPth
 
 app = Flask(__name__, static_folder='static')
-app.config['depotDirectory'] = '../depot/imgdepot'
+app.config['depotDirectory'] = imgDepotPth
 
 
 @app.route('/')
